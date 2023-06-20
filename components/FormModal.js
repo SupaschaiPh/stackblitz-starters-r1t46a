@@ -18,12 +18,17 @@ import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ModalContext } from '../pages/course';
 const editorOptions = {
   videoFileInput: false,
   tabDisable: false,
   katex: katex,
+  font: [
+    'Noto Sans Thai Looped','Noto Sans Thai','Sarabun',
+    'Arial', 'Comic Sans MS', 'Courier New', 'Impact',
+    'Georgia','tahoma', 'Trebuchet MS', 'Verdana'
+  ] ,
   buttonList: [
     [
       'undo',
@@ -64,7 +69,6 @@ const editorOptions = {
       'codeView',
       'preview',
       'print',
-      'save',
     ],
   ],
 };
@@ -81,20 +85,21 @@ const SunEditor = dynamic(() => import('suneditor-react'), {
     </Dialog>
 */
 
-export function CourseEditModal({targetForm:string = ""}) {
-  let editorVal = '';
-  const {open,setOpen} = useContext(ModalContext)
+export function CourseEditModal({open,setOpen,targetForm:string = ""}) {
   return (
     <Dialog fullWidth="sm" maxWidth="sm" open={open}>
       <DialogTitle>Course Editor</DialogTitle>
       <DialogContent>
-        <Typography sx={{ p: 0.5 }}></Typography>
         <FormGroup>
+        <Box>
+            <Typography component="span" ><VisibilityRoundedIcon />Visibility : </Typography>
+            <Switch size="small" onChange={(e)=>{console.log(e.target.checked)}} defaultChecked />
+          </Box>
           <TextField
-            sx={{ mb: 2 }}
+            sx={{ mb: 2 ,mt:2}}
             fullWidth
             size="small"
-            id="outlined-basic"
+            id="name"
             label="Name"
             variant="outlined"
           />
@@ -105,15 +110,11 @@ export function CourseEditModal({targetForm:string = ""}) {
             rows={3}
             multiline
             size="small"
-            id="outlined-basic"
+            id="desc"
             label="Desciption"
             variant="outlined"
           />
 
-          <Box>
-            <Typography component="span" ><VisibilityRoundedIcon />Visibility : </Typography>
-            <Switch size="small" onChange={(e)=>{console.log(e.target.checked)}} defaultChecked />
-          </Box>
         </FormGroup>
       </DialogContent>
       <DialogActions>
@@ -123,4 +124,39 @@ export function CourseEditModal({targetForm:string = ""}) {
       </DialogActions>
     </Dialog>
   );
+}
+
+
+export function LessonEditModal({open,setOpen,targetForm:string = ""}){
+  let editorVal = '';
+ 
+  return (
+    <Dialog fullScreen sx={{margin:5}} open={open}>
+      <DialogContent>
+        <Typography variant="h5" >Lesson Editor</Typography>
+        <FormGroup>
+          <Box>
+                <Typography component="span" ><VisibilityRoundedIcon />Visibility : </Typography>
+                <Switch size="small" onChange={(e)=>{console.log(e.target.checked)}} defaultChecked />
+          </Box>
+          <TextField
+              sx={{ mb: 2,mt:2 }}
+              fullWidth
+              size="small"
+              id="name"
+              label="Name"
+              variant="outlined"
+            />
+            
+            <SunEditor autoFocus height="450px"  onChange={(val,e)=>{editorVal =val ;console.warn(editorVal);}} setOptions={editorOptions} />
+
+            
+          </FormGroup>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={()=>setOpen(false)} fullWidth variant="contained" color="error" >Cancle</Button>
+        <Button fullWidth variant="contained" color="success" >Save</Button>
+      </DialogActions>
+    </Dialog>
+  )
 }

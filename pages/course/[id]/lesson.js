@@ -32,8 +32,11 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
+import { LessonEditModal } from '../../../components/FormModal';
+import { useState } from 'react';
 export default function Course() {
   const router = useRouter();
+  const [openLessonModal,setOpenLessonModal] = useState(true)
   const courseId = router.query.id;
   return (
     <Layout>
@@ -102,8 +105,8 @@ export default function Course() {
             </Stack>
           </Grid>
         </Grid>
-
       </Container>
+      <LessonEditModal open={openLessonModal} setOpen={setOpenLessonModal} />
     </Layout>
   );
 }

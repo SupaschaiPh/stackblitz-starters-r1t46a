@@ -24,8 +24,6 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { CourseEditModal } from '../../components/FormModal';
 
-export const ModalContext = createContext({})
-
 const index1Content = (
   <React.Fragment>
     <Card sx={{ width: '100%' }}>
@@ -93,9 +91,9 @@ export default function Course() {
             </Button> : ""}
           </div>
         </Container>
-        <ModalContext.Provider value={{open:modal1Open,setOpen:setModal1Open}} >
-          <CourseEditModal  />
-        </ModalContext.Provider>
+        
+        <CourseEditModal open={modal1Open} setOpen={setModal1Open} />
+        
       </Layout>
     
   );
